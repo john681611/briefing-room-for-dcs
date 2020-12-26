@@ -279,17 +279,6 @@ namespace BriefingRoom4DCSWorld.Template
         private int PlayerSPWingmen_;
 
         /// <summary>
-        /// Type of aircraft the player will fly.
-        /// As with all values in the "Player, single player only" category, this value is ignored if any
-        /// flight group is specified in <see cref="PlayerMPFlightGroups" />, the multiplayer flight groups
-        /// are then used instead.
-        /// </summary>
-        [Category("Player"), DisplayName("Carrier")]
-        [Description("Type of aircraft the player will fly. As with all values in the \"Player, single player only\" category, this value is ignored if any flight group is specified in \"MP flight groups\", the multiplayer flight groups are then used instead.")]
-        [TypeConverter(typeof(DBEntryCarrierConverter))]
-        public string PlayerCarrier {get; set; }
-
-        /// <summary>
         /// Skill level of AI wingmen and escort aircraft.
         /// </summary>
         [Category("Player"), DisplayName("AI skill level")]
@@ -353,6 +342,17 @@ namespace BriefingRoom4DCSWorld.Template
         private string TheaterStartingAirbase_;
 
         /// <summary>
+        /// Type of aircraft the player will fly.
+        /// As with all values in the "Player, single player only" category, this value is ignored if any
+        /// flight group is specified in <see cref="PlayerMPFlightGroups" />, the multiplayer flight groups
+        /// are then used instead.
+        /// </summary>
+        [Category("Theater"), DisplayName("Carrier")]
+        [Description("Aircraft Carrier Player Starts on")]
+        [TypeConverter(typeof(DBEntryCarrierConverter))]
+        public string TheaterCarrier {get; set; }
+
+        /// <summary>
         /// Resets all properties to their default values.
         /// </summary>
         public void Clear()
@@ -389,7 +389,6 @@ namespace BriefingRoom4DCSWorld.Template
             PlayerEscortCAP = 0;
             PlayerEscortSEAD = 0;
             PlayerStartLocation = PlayerStartLocation.Runway;
-            PlayerCarrier = "";
 
             PlayerMPFlightGroups = new MissionTemplateMPFlightGroup[0];
             PlayerSPAircraft = TemplateTools.CheckValuePlayerAircraft(Database.Instance.Common.DefaultPlayerAircraft);
@@ -398,6 +397,7 @@ namespace BriefingRoom4DCSWorld.Template
             TheaterID = TemplateTools.CheckValue<DBEntryTheater>(Database.Instance.Common.DefaultTheater);
             TheaterRegionsCoalitions = CountryCoalition.Default;
             TheaterStartingAirbase = "";
+            TheaterCarrier = "";
         }
 
         /// <summary>
@@ -444,7 +444,6 @@ namespace BriefingRoom4DCSWorld.Template
                 PlayerEscortCAP = ini.GetValue("Player", "EscortCAP", PlayerEscortCAP);
                 PlayerEscortSEAD = ini.GetValue("Player", "EscortSEAD", PlayerEscortSEAD);
                 PlayerStartLocation = ini.GetValue("Player", "StartLocation", PlayerStartLocation);
-                PlayerCarrier = ini.GetValue("Player", "PlayerCarrier", PlayerCarrier);
 
                 int fgFlightGroupCount = Math.Max(0, ini.GetValue<int>("PlayerMP", "FGCount"));
                 PlayerMPFlightGroups = new MissionTemplateMPFlightGroup[fgFlightGroupCount];
@@ -457,6 +456,7 @@ namespace BriefingRoom4DCSWorld.Template
                 TheaterID = ini.GetValue("Theater", "ID", TheaterID);
                 TheaterRegionsCoalitions = ini.GetValue("Theater", "RegionsCoalitions", TheaterRegionsCoalitions);
                 TheaterStartingAirbase = ini.GetValue("Theater", "StartingAirbase", TheaterStartingAirbase);
+                TheaterCarrier = ini.GetValue("Theater", "TheaterCarrier", TheaterCarrier);
             }
 
             return true;
@@ -503,7 +503,6 @@ namespace BriefingRoom4DCSWorld.Template
                 ini.SetValue("Player", "EscortCAP", PlayerEscortCAP);
                 ini.SetValue("Player", "EscortSEAD", PlayerEscortSEAD);
                 ini.SetValue("Player", "StartLocation", PlayerStartLocation);
-                ini.SetValue("Player", "PlayerCarrier", PlayerCarrier);
 
                 ini.SetValue("PlayerSP", "Aircraft", PlayerSPAircraft);
                 ini.SetValue("PlayerSP", "Wingmen", PlayerSPWingmen);
@@ -516,6 +515,7 @@ namespace BriefingRoom4DCSWorld.Template
                 ini.SetValue("Theater", "ID", TheaterID);
                 ini.SetValue("Theater", "RegionsCoalitions", TheaterRegionsCoalitions);
                 ini.SetValue("Theater", "StartingAirbase", TheaterStartingAirbase);
+                ini.SetValue("Theater", "TheaterCarrier", TheaterCarrier);
 
                 ini.SaveToFile(filePath);
             }
